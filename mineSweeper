@@ -1,0 +1,116 @@
+
+import java.util.Arrays;
+import java.util.Random;
+import java.util.Scanner;
+
+public class mineSweeper {
+	int sıra,kolon,count,gaunt;
+	int sayı;
+	int mine[][];
+	int minesız[][];
+	int sonharita[][];
+	mineSweeper(int sıra,int kolon){
+		this.sıra=sıra;
+		this.kolon=kolon;
+		this.mine=new int[sıra][kolon];	
+		this.minesız=new int[sıra][kolon];
+		this.sonharita=new int[sıra][kolon];
+	}
+	void durumDeğiştirici() {
+		Random random=new Random();
+		
+		System.out.println("Mayın Sayısı : "+sayı);
+		while(sayı>0) {
+			int sıra1=random.nextInt(sıra);
+			int kolon1=random.nextInt(kolon);
+			if(mine[sıra1][kolon1]!=-1) {
+			mine[sıra1][kolon1]=-1;
+			sayı-=1;
+			}
+			else
+				continue;
+}
+		
+	}
+	void sayaç() {
+		sayıyıazalt();
+		count=(kolon*sıra)-sayı;
+	}
+	
+	void yerAlma() {
+		int a,b;
+		Scanner scan=new Scanner(System.in);
+		a=scan.nextInt();
+		b=scan.nextInt();
+		if((a<0||a>sıra-1)||(b<0||b>kolon-1)) {
+			System.out.println("Lütfen geçerli değerler giriniz");
+			yerAlma();
+		}
+		if(sonharita[a][b]==1) {System.out.println(" aynı seçtiğiniz yeri tekrar seçemezsiniz ");
+		yerAlma();}
+		
+		while(count>0) {
+		if(mine[a][b]==-1) {
+		System.out.println("kaybetiniz");
+		}
+		else
+			sonharita[a][b]=1;
+			if(a-1>=0&&mine[a-1][b]==-1) {
+				minesız[a][b]++;
+			}
+			if(a+1<sıra&&mine[a+1][b]==-1) {
+				minesız[a][b]++;
+			}
+			if(b-1>=0&&mine[a][b-1]==-1) {
+				minesız[a][b]++;
+			}
+			if(b+1<kolon&&mine[a][b+1]==-1) {
+				minesız[a][b]++;
+			}
+			count--;
+			mayınsızHarita();
+			yerAlma();
+		}
+				
+		
+	
+	}
+	void run() {
+		sayıyıazalt();
+		durumDeğiştirici();
+		sayaç();
+		print();
+		yerAlma();
+		
+	}
+	void sayıyıazalt() {
+		this.sayı=(sıra*kolon)/4;
+	}
+
+	void mayınsızHarita() {
+		for(int i=0;i<sıra;i++) {
+			for(int j=0;j<kolon;j++) {
+				
+				System.out.print(" "+minesız[i][j]+" ");
+				
+				
+			}			
+			System.out.println();
+		}	
+	}
+
+	
+	void print() {
+		for(int i=0;i<sıra;i++) {
+			for(int j=0;j<kolon;j++) {
+				if(mine[i][j]==0) {
+				System.out.print(" "+mine[i][j]+" ");
+				}
+				else
+					System.out.print(+mine[i][j]+" ");
+			}			
+			System.out.println();
+		}	
+	}
+
+}
